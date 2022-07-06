@@ -22,6 +22,7 @@ namespace NewApplication
     
         public int ClubId { get; set; }
         public string ClubName { get; set; }
+        public string ClubPass { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Participant> Participants { get; set; }

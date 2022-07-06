@@ -36,7 +36,8 @@
                     @Html.DisplayFor(modelItem => item.Zone.ZoneName)
                 </td>
                 <td>
-                    @Html.ActionLink("Details", "Details", new { id = item.ActivityId }, htmlAttributes: new { @class = "btn btn-primary" })
+                    @Html.ActionLink("Details", "Details", new { id = item.ActivityId }, htmlAttributes: new { @class = "btn btn-default" }) 
+                    @Html.ActionLink("Print Participant List", "PrintActivity", new { ActivityId = item.ActivityId }, htmlAttributes: new { @class = "btn btn-primary" })
                 </td>
             </tr>
         }

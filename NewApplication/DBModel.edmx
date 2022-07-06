@@ -27,6 +27,7 @@
           </Key>
           <Property Name="ClubId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ClubName" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="ClubPass" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="Participants">
           <Key>
@@ -262,7 +263,7 @@
             <End Role="Session" EntitySet="Sessions" />
           </AssociationSet>
           <FunctionImport Name="GetParticipantSessions" EntitySet="Sessions" ReturnType="Collection(DBModel.Session)">
-            <Parameter Name="ParticipantId" Mode="In" Type="Int32" />
+          <Parameter Name="ParticipantId" Mode="In" Type="Int32" />
           </FunctionImport>
         </EntityContainer>
         <EntityType Name="Activity">
@@ -293,6 +294,7 @@
           <Property Name="ClubId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="ClubName" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Participants" Relationship="DBModel.FK_ClubParticipant" FromRole="Club" ToRole="Participant" />
+          <Property Name="ClubPass" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="Participant">
           <Key>
@@ -459,6 +461,7 @@
           <EntitySetMapping Name="Clubs">
             <EntityTypeMapping TypeName="DBModel.Club">
               <MappingFragment StoreEntitySet="Clubs">
+                <ScalarProperty Name="ClubPass" ColumnName="ClubPass" />
                 <ScalarProperty Name="ClubName" ColumnName="ClubName" />
                 <ScalarProperty Name="ClubId" ColumnName="ClubId" />
               </MappingFragment>

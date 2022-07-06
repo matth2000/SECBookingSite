@@ -1,0 +1,50 @@
+﻿
+@{
+    ViewBag.Title = "clubPassGet";
+}
+
+<h2>Enter Club Code</h2>
+
+
+
+    
+<div class="form-horizontal">
+        <h4>No Code Entered or Code incorrect for selected club</h4>
+        <hr />
+
+            <input id="passCode" type="text">
+                <button  id="login" type="button" class="btn btn-success" >Enter</button>
+</div>
+<hr />
+<div>
+    @Html.ActionLink("Back to Club List", "Index", "Clubs", htmlAttributes: new { @class = "btn btn-default" })
+</div>
+
+
+
+<script>
+
+    $(document).ready(function () {
+        $('#passCode').keypress(function (e) {
+            if (e.keyCode == 13)
+                $('#login').click();
+        });
+    });
+
+    $("#login").click(function () {
+        var passCode = $("#passCode").val();
+         $.ajax({
+                type: "POST",
+                data: {
+                    pass: passCode, clubId: @ViewBag.ClubId,
+                },
+            url: "@Url.Action("clubPassPost", "Clubs")",
+                success: function (result) {
+                    window.location.href = result;
+                },
+                error: function (result) {
+                    alert("Error occureed logging in");
+                }
+            });
+    });
+</script>

@@ -33,7 +33,17 @@ namespace NewApplication.Controllers
             {
                 return HttpNotFound();
             }
-            return View(participant);
+            int clubId = participant.Club.ClubId;
+            if (Session["VerifiedClub"] != null)
+            {
+                var sessionClub = Session["VerifiedClub"] as string;
+                if (sessionClub == clubId.ToString())
+                {
+                    
+                    return View(participant);
+                }
+            }
+            return RedirectToAction("clubPassGet", "Clubs", new { id = clubId }) ;
         }
 
         public PartialViewResult Sessions(int? id)

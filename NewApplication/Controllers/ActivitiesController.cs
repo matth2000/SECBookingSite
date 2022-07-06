@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using NewApplication;
+using Rotativa;
 
 namespace NewApplication.Controllers
 {
@@ -34,6 +35,12 @@ namespace NewApplication.Controllers
                 return HttpNotFound();
             }
             return View(activity);
+        }
+
+       public ActionResult PrintActivity(int ActivityId)
+        {
+            Activity activity = db.Activities.Find(ActivityId);
+            return new ActionAsPdf("Details", new { id = ActivityId }) { FileName = (activity.ActivityName + "ParticipantList.pdf") };
         }
         /*
         // GET: Activities/Create

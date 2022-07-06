@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data;
-using System.Data.Entity;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
-using NewApplication;
 
 namespace NewApplication.Controllers
 {
@@ -23,16 +19,54 @@ namespace NewApplication.Controllers
         // GET: Clubs/Details/5
         public ActionResult Details(int? id)
         {
-            if (id == null)
+            if (Session["VerifiedClub"] != null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                var sessionClub = Session["VerifiedClub"] as string;
+                if (sessionClub == id.ToString())
+                {
+                    if (id == null)
+                    {
+                        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                    }
+                    Club club = db.Clubs.Find(id);
+                    if (club == null)
+                    {
+                        return HttpNotFound();
+                    }
+                    return View(club);
+                }
             }
-            Club club = db.Clubs.Find(id);
-            if (club == null)
+            return RedirectToAction("clubPassGet", "Clubs", new { id = id });
+        }
+
+        public ActionResult clubPassGet (int id)
+        {
+            
+            if (Session["VerifiedClub"] != null) {
+                var sessionClub = Session["VerifiedClub"] as string;
+                if (sessionClub == id.ToString())
+                {
+                    return RedirectToAction("Details", "Clubs", new { id = id });
+                }
+            }
+            ViewBag.ClubId = id;
+            return View();
+        }
+
+        public string clubPassPost (string pass, int clubId)
+        {
+            Club club = db.Clubs.Where(model => model.ClubPass == pass).FirstOrDefault();
+            if(club != null)
             {
-                return HttpNotFound();
+                Session["VerifiedClub"] = club.ClubId.ToString();
+                return Url.Action("Details", "Clubs", new { id = clubId }).ToString();
             }
-            return View(club);
+            else
+            {
+                Session["VerifiedClub"] = null;
+                return Url.Action("clubPassGet", "Clubs", new { id = clubId }).ToString();
+            }
+            
         }
 
         public PartialViewResult ParticipantsView(int? id)
@@ -41,6 +75,7 @@ namespace NewApplication.Controllers
             List<Participant> participants = club.Participants.ToList();
             return PartialView(participants);
         }
+
         [HttpGet]
         public ActionResult CreateParticipant (int? id)
         {
