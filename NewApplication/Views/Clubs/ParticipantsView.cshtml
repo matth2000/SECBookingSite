@@ -1,0 +1,39 @@
+﻿@model IEnumerable<NewApplication.Participant>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ParticipantName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Club.ClubName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AgeGroup.AgeGroupName)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ParticipantName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Club.ClubName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AgeGroup.AgeGroupName)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit Participant", "Edit", "Participants", new { id = item.ParticipantId, clubId = item.ClubClubId }, htmlAttributes: new { @class = "btn btn-default" })
+                    @Html.ActionLink("Book Sessions", "Details", "Participants", new { id = item.ParticipantId }, htmlAttributes: new { @class = "btn btn-default" })
+                    @Html.ActionLink("Session Schedule", "ParticipantSessions", "Participants", new { id = item.ParticipantId }, htmlAttributes: new { @class = "btn btn-default" })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

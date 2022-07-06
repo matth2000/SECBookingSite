@@ -1,0 +1,69 @@
+﻿@model NewApplication.Participant
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>@Model.ParticipantName</h2>
+
+<div>
+    <h4>@Model.Club.ClubName</h4>
+    <h5>@Model.AgeGroup.AgeGroupName</h5>
+
+
+        <div id="sesssionsView">
+            @Html.Action("Sessions", new { id = Model.ParticipantId })
+        </div>
+
+</div>
+
+
+
+<script type="text/javascript">
+        function addParticipant(participantId, sessionId) {
+            console.log("Run Button");
+            console.log(participantId, sessionId);
+            $.ajax({
+                type: "POST",
+                data: {
+                    sessionId: sessionId, participantId: participantId
+                },
+            url: "@Url.Action("AddParticpant", "Participants")",
+                success: function (result) {
+                    console.log(result);
+                    $("#sesssionsView").load("@Url.Action("Sessions", new { id = Model.ParticipantId })");
+                    alert("Participant Added Successfully");
+                },
+                error: function (result) {
+                    console.log(result);
+                    $("#sesssionsView").load("@Url.Action("Sessions", new { id = Model.ParticipantId })");
+                    alert("An Error occured adding participant, please contact us to correct this");
+                }
+            });
+    }
+
+            function removeParticipant(participantId, sessionId) {
+            console.log("Run Button");
+            console.log(participantId, sessionId);
+            $.ajax({
+                type: "POST",
+                data: {
+                    sessionId: sessionId, participantId: participantId
+                },
+            url: "@Url.Action("RemoveParticipant", "Participants")",
+                success: function (result) {
+                    console.log(result);
+                    $("#sesssionsView").load("@Url.Action("Sessions", new { id = Model.ParticipantId })");
+                    alert("Participant Removed Successfully");
+                },
+                error: function (result) {
+                    console.log(result);
+                    $("#sesssionsView").load("@Url.Action("Sessions", new { id = Model.ParticipantId })");
+                    alert("An Error occured removing participant, please contact us to correct this");
+                }
+            });
+        }
+
+
+</script>
+

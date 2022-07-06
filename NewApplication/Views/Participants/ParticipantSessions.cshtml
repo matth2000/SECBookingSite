@@ -1,0 +1,33 @@
+﻿@model NewApplication.Participant
+
+@{
+    ViewBag.Title = "ParticipantSessions";
+}
+
+<h2>@Model.ParticipantName</h2>
+
+<div>
+    <h4>@Model.Club.ClubName</h4>
+    <h5>Particpant Sessions</h5>
+    <hr />
+    <table class="table display">
+        <thead>
+            <tr>
+                <th>Activity Name</th>
+                <th>Session Name</th>
+                <th>Session Zone</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach(var item in Model.Sessions)
+            {
+            <tr>
+                <td>@item.Activity.ActivityName</td>
+                <td>@item.SessionGroup.SessionName</td>
+                <td>@item.Activity.Zone.ZoneName</td>
+            </tr>
+            }
+        </tbody>
+    </table>
+</div>
+

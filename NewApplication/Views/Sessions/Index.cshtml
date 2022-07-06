@@ -1,0 +1,47 @@
+﻿@model IEnumerable<NewApplication.Session>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Session List</h2>
+
+<table id="my_table" class="table display">
+    <thead>
+        <tr>
+
+            <th>
+                @Html.DisplayNameFor(model => model.SessionGroup.SessionName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Activity.ActivityName)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.SessionGroup.SessionName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Activity.ActivityName)
+                </td>
+                <td>
+                    @Html.ActionLink("Details", "Details", new { id = item.SessionId }, htmlAttributes: new { @class = "btn btn-default" })
+
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<script>
+    $(document).ready(function () {
+        $('#my_table').DataTable();
+    });
+</script>

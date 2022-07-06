@@ -1,0 +1,60 @@
+﻿@model NewApplication.Session
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>@Model.Activity.ActivityName</h2>
+
+<div>
+    <h4>@Model.SessionGroup.SessionName</h4>
+    <h5>@Model.Activity.Zone.ZoneName</h5>
+
+    <dl class="dl-horizontal">
+        <dt>
+            No. of Participants:
+        </dt>
+
+        <dd>
+            @Model.Participants.Count()
+        </dd>
+
+    </dl>
+    <hr />
+
+    <table id="my_table" class="table display">
+        <thead>
+            <tr>
+                <th>
+                    Participant Name
+                </th>
+                <th>
+                    Participant Club
+                </th>
+                <th>
+                    Participant Age Group
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Participants)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ParticipantName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Club.ClubName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.AgeGroup.AgeGroupName)
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+</div>
+<p>
+    @Html.ActionLink("Back to List", "Index", null, htmlAttributes: new { @class = "btn btn-primary" })
+</p>

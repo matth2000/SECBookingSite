@@ -1,0 +1,39 @@
+﻿@model IEnumerable<NewApplication.Club>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Club List</h2>
+<h4>Please Select Club to View and Add Participants</h4>
+
+<table id="my_table" class="table display">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ClubName)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ClubName)
+                </td>
+                <td>
+                    @Html.ActionLink("View Members", "Details", new { id = item.ClubId }, htmlAttributes: new { @class = "btn btn-default" })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<script>
+    $(document).ready(function () {
+        $('#my_table').DataTable();
+    });
+</script>
+

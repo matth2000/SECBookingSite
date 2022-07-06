@@ -1,0 +1,16 @@
+﻿@model NewApplication.Club
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>@Model.ClubName</h2>
+
+<div>
+    <h4>Club Participants</h4>
+    @Html.ActionLink("Add Participant", "CreateParticipant", new { id = Model.ClubId }, htmlAttributes: new { @class = "btn btn-default" })
+    <hr />
+
+    @Html.Action("ParticipantsView", Model.ClubId)
+</div>
+

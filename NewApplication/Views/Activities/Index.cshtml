@@ -1,0 +1,51 @@
+﻿@model IEnumerable<NewApplication.Activity>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Activitiy List</h2>
+
+
+<table id="myTable" class="table display">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ActivityName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AgeGroup.AgeGroupName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Zone.ZoneName)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ActivityName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AgeGroup.AgeGroupName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Zone.ZoneName)
+                </td>
+                <td>
+                    @Html.ActionLink("Details", "Details", new { id = item.ActivityId }, htmlAttributes: new { @class = "btn btn-primary" })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<script>
+    $(document).ready(function () {
+        $('#myTable').DataTable();
+    });
+</script>
+
