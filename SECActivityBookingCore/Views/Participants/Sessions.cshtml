@@ -1,0 +1,18 @@
+﻿@model IEnumerable<NewApplication.SessionGroup>
+
+
+<table class="table">
+@foreach (var item in Model) {
+    <tr>
+        <th>
+            @Html.DisplayFor(modelItem => item.SessionName)
+        </th>
+    </tr>
+    <tr>
+        <td>
+                @Html.RenderAction("SessionActivities", new { sessionGroupId = item.SessionGroupId, participantId = ViewBag.ParticipantId })
+        </td>
+    </tr>
+
+}
+</table>

@@ -5,9 +5,9 @@ using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Web;
-using System.Web.Mvc;
 using NewApplication;
-
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace NewApplication.Controllers
 {
@@ -27,18 +27,18 @@ namespace NewApplication.Controllers
         {
             if (id == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                return new StatusCodeResult((int) HttpStatusCode.BadRequest);
             }
             Participant participant = db.Participants.Find(id);
             if (participant == null)
             {
-                return HttpNotFound();
+                return NotFound();
             }
             int clubId = participant.Club.ClubId;
-            var adminSession = Session["VerifiedActiv"] as string;
-            if (Session["VerifiedClub"] != null || adminSession == true.ToString())
+            var adminSession = HttpContext.Session.GetString("VerifiedActiv") as string;
+            if (HttpContext.Session.GetString("VerifiedClub") != null || adminSession == true.ToString())
             {
-                var sessionClub = Session["VerifiedClub"] as string;
+                var sessionClub = HttpContext.Session.GetString("VerifiedClub") as string;
                 if (sessionClub == clubId.ToString() || adminSession == true.ToString())
                 {
                     
@@ -137,12 +137,12 @@ namespace NewApplication.Controllers
         {
             if (id == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                return new StatusCodeResult((int) HttpStatusCode.BadRequest);
             }
             Participant participant = db.Participants.Find(id);
             if (participant == null)
             {
-                return HttpNotFound();
+                return NotFound();
             }
             ViewBag.ClubClubId = clubId;
             ViewBag.AgeGroup_AgeGroupId = new SelectList(db.AgeGroups, "AgeGroupId", "AgeGroupName", participant.AgeGroup_AgeGroupId);
@@ -154,7 +154,7 @@ namespace NewApplication.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ParticipantId,ClubClubId,ParticipantName,AgeGroup_AgeGroupId")] Participant participant)
+        public ActionResult Edit([Bind("ParticipantId,ClubClubId,ParticipantName,AgeGroup_AgeGroupId")] Participant participant)
         {
             if (ModelState.IsValid)
             {
@@ -171,12 +171,12 @@ namespace NewApplication.Controllers
         {
             if (id == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                return new StatusCodeResult((int) HttpStatusCode.BadRequest);
             }
             Participant participant = db.Participants.Find(id);
             if (participant == null)
             {
-                return HttpNotFound();
+                return NotFound();
             }
             return View(participant);
         }

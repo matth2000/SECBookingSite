@@ -5,9 +5,9 @@ using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Web;
-using System.Web.Mvc;
 using NewApplication;
-using Rotativa;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace NewApplication.Controllers
 {
@@ -18,9 +18,9 @@ namespace NewApplication.Controllers
 
         public ActionResult activPassGet()
         {
-            if (Session["VerifiedActiv"] != null)
+            if (HttpContext.Session.GetString("VerifiedActiv") != null)
             {
-                var sessionClub = Session["VerifiedActiv"] as string;
+                var sessionClub = HttpContext.Session.GetString("VerifiedActiv") as string;
                 if (sessionClub == true.ToString())
                 {
                     return RedirectToAction("Index", "Activities");
@@ -33,12 +33,12 @@ namespace NewApplication.Controllers
         {
             if(pass == "24pchj0bsv95")
             {
-                Session["VerifiedActiv"] = true.ToString();
+                HttpContext.Session.SetString("VerifiedActiv", true.ToString());
                 return Url.Action("Index", "Activities").ToString();
             }
             else
             {
-                Session["VerifiedActiv"] = null;
+                HttpContext.Session.Remove("VerifiedActiv");
                 return Url.Action("activPassGet", "Activities").ToString();
             }
 
@@ -47,9 +47,9 @@ namespace NewApplication.Controllers
         // GET: Activities
         public ActionResult Index()
         {
-            if (Session["VerifiedActiv"] != null)
+            if (HttpContext.Session.GetString("VerifiedActiv") != null)
             {
-                var sessionClub = Session["VerifiedActiv"] as string;
+                var sessionClub = HttpContext.Session.GetString("VerifiedActiv") as string;
                 if (sessionClub == true.ToString())
                 {
                     var activities = db.Activities.Include(a => a.AgeGroup);
@@ -65,16 +65,16 @@ namespace NewApplication.Controllers
         {
             if (id == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                return new StatusCodeResult((int) HttpStatusCode.BadRequest);
             }
             Activity activity = db.Activities.Find(id);
             if (activity == null)
             {
-                return HttpNotFound();
+                return NotFound();
             }
-            if (Session["VerifiedActiv"] != null)
+            if (HttpContext.Session.GetString("VerifiedActiv") != null)
             {
-                var sessionClub = Session["VerifiedActiv"] as string;
+                var sessionClub = HttpContext.Session.GetString("VerifiedActiv") as string;
                 if (sessionClub == true.ToString())
                 {   
                     

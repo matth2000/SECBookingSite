@@ -1,19 +1,20 @@
 ﻿
+
 @{
     ViewBag.Title = "clubPassGet";
 }
 
-<h2>Enter Club Code</h2>
+<h2>Enter Admin Code</h2>
 
 
 
-    
+
 <div class="form-horizontal">
-        <h4>Incorrect Code/No Code Entered</h4>
-        <hr />
+    <h4>Incorrect Code/No Code Entered</h4>
+    <hr />
 
-            <input id="passCode" type="text">
-                <button  id="login" type="button" class="btn btn-success" >Enter</button>
+    <input id="passCode" type="text">
+    <button id="login" type="button" class="btn btn-success">Enter</button>
 </div>
 <hr />
 <div>
@@ -36,9 +37,9 @@
          $.ajax({
                 type: "POST",
                 data: {
-                    pass: passCode, clubId: @ViewBag.ClubId,
+                    pass: passCode,
                 },
-            url: "@Url.Action("clubPassPost", "Clubs")",
+            url: "@Url.Action("activPassPost", "Activities")",
                 success: function (result) {
                     window.location.href = result;
                 },

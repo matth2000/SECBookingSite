@@ -12,6 +12,6 @@
     @Html.ActionLink("View Participant Sessions", "ClubView", new { id = Model.ClubId }, htmlAttributes: new { @class = "btn btn-default" })
     <hr />
 
-    @Html.Action("ParticipantsView", Model.ClubId)
+    @Html.RenderAction("ParticipantsView", Model.ClubId)
 </div>
 

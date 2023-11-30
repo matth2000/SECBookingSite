@@ -25,6 +25,7 @@
     <UseGlobalApplicationHostFile />
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <_MigrateToProjectGuid>536c5278-7929-44d2-979a-7bd09888911e</_MigrateToProjectGuid>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -751,6 +752,8 @@
     <Content Include="Views\Participants\SessionActivities.cshtml" />
     <Content Include="Views\Participants\ParticipantSessions.cshtml" />
     <Content Include="Views\Clubs\clubPassGet.cshtml" />
+    <Content Include="Views\Clubs\ClubView.cshtml" />
+    <Content Include="Views\Activities\activPassGet.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

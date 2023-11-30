@@ -1,0 +1,70 @@
+﻿@model IEnumerable<NewApplication.Session>
+
+
+
+<table class="table_id display">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Activity.Zone.ZoneName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Activity.ActivityName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SessionGroup.SessionName)
+            </th>
+            <th>
+                Places Remaining
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+        <tr>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.Activity.Zone.ZoneName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Activity.ActivityName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SessionGroup.SessionName)
+            </td>
+            <td>
+                @(15-item.Participants.Count())
+            </td>
+
+            <td>
+
+                @if (item.Participants.Contains(ViewBag.Participant))
+                {
+                    <button type="button" class="btn btn-default" onclick="removeParticipant('@ViewBag.ParticipantId','@item.SessionId')">Remove from Session</button>
+                }
+                @if (!item.Participants.Contains(ViewBag.Participant))
+                {
+                    if (item.Participants.Count() < 15)
+                    {
+                        <button type="button" class="btn btn-default" onclick="addParticipant('@ViewBag.ParticipantId','@item.SessionId')">Add to Session</button>
+                    }
+                    else
+                    {
+                        <p>No Spaces on Session</p>
+                    }
+                }
+
+
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>
+
+<script>
+    $(document).ready(function () {
+        $('.table_id').DataTable();
+    });
+</script>

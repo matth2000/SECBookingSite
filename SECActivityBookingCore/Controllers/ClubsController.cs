@@ -2,7 +2,8 @@
 using System.Data;
 using System.Linq;
 using System.Net;
-using System.Web.Mvc;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace NewApplication.Controllers
 {
@@ -19,20 +20,20 @@ namespace NewApplication.Controllers
         // GET: Clubs/Details/5
         public ActionResult Details(int? id)
         {
-            var sessionActiv = Session["VerifiedActiv"] as string;
-            if (Session["VerifiedClub"] != null || sessionActiv == true.ToString())
+            var sessionActiv = HttpContext.Session.GetString("VerifiedActiv") as string;
+            if (HttpContext.Session.GetString("VerifiedClub") != null || sessionActiv == true.ToString())
             {
-                var sessionClub = Session["VerifiedClub"] as string;
+                var sessionClub = HttpContext.Session.GetString("VerifiedClub") as string;
                 if (sessionClub == id.ToString() || sessionActiv == true.ToString())
                 {
                     if (id == null)
                     {
-                        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                        return new StatusCodeResult((int) HttpStatusCode.BadRequest);
                     }
                     Club club = db.Clubs.Find(id);
                     if (club == null)
                     {
-                        return HttpNotFound();
+                        return NotFound();
                     }
                     return View(club);
                 }
@@ -42,20 +43,21 @@ namespace NewApplication.Controllers
 
         public ActionResult ClubView(int? id)
         {
-            var sessionActiv = Session["VerifiedActiv"] as string;
-            if (Session["VerifiedClub"] != null || sessionActiv == true.ToString())
+            var sessionActiv = HttpContext.Session.GetString("VerifiedActiv") as string;
+            sessionActiv = HttpContext.Session.GetString("VerifiedActiv");
+            if (HttpContext.Session.GetString("VerifiedClub") != null || sessionActiv == true.ToString())
             {
-                var sessionClub = Session["VerifiedClub"] as string;
+                var sessionClub = HttpContext.Session.GetString("VerifiedClub") as string;
                 if (sessionClub == id.ToString() || sessionActiv == true.ToString())
                 {
                     if (id == null)
                     {
-                        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                        return new StatusCodeResult((int) HttpStatusCode.BadRequest);
                     }
                     Club club = db.Clubs.Find(id);
                     if (club == null)
                     {
-                        return HttpNotFound();
+                        return NotFound();
                     }
                     return View(club);
                 }
@@ -65,10 +67,10 @@ namespace NewApplication.Controllers
 
         public ActionResult clubPassGet (int id)
         {
-            var sessionActiv = Session["VerifiedActiv"] as string;
-            if (Session["VerifiedClub"] != null || sessionActiv == true.ToString())
+            var sessionActiv = HttpContext.Session.GetString("VerifiedActiv") as string;
+            if (HttpContext.Session.GetString("VerifiedClub") != null || sessionActiv == true.ToString())
             {
-                var sessionClub = Session["VerifiedClub"] as string;
+                var sessionClub = HttpContext.Session.GetString("VerifiedClub") as string;
                 if (sessionClub == id.ToString() || sessionActiv == true.ToString())
                 {
                     return RedirectToAction("Details", "Clubs", new { id = id });
@@ -83,12 +85,12 @@ namespace NewApplication.Controllers
             Club club = db.Clubs.Where(model => model.ClubPass == pass).FirstOrDefault();
             if(club != null)
             {
-                Session["VerifiedClub"] = club.ClubId.ToString();
+                HttpContext.Session.SetString("VerifiedClub", club.ClubId.ToString());
                 return Url.Action("Details", "Clubs", new { id = clubId }).ToString();
             }
             else
             {
-                Session["VerifiedClub"] = null;
+                HttpContext.Session.Remove("VerifiedClub");
                 return Url.Action("clubPassGet", "Clubs", new { id = clubId }).ToString();
             }
             
@@ -110,7 +112,7 @@ namespace NewApplication.Controllers
         }
 
         [HttpPost]
-        public ActionResult CreateParticipant ([Bind(Include = "ParticipantId,ClubClubId,ParticipantName,AgeGroup_AgeGroupId")] Participant participant)
+        public ActionResult CreateParticipant ([Bind("ParticipantId,ClubClubId,ParticipantName,AgeGroup_AgeGroupId")] Participant participant)
         {
             if (ModelState.IsValid)
             {

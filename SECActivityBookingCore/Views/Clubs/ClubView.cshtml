@@ -1,0 +1,42 @@
+﻿@model NewApplication.Club
+
+@{
+    ViewBag.Title = "ClubView";
+}
+
+<div>
+    <h4>@Model.ClubName</h4>
+    <h5>Participant Sessions</h5>
+    <hr />
+
+
+    @foreach (var item in Model.Participants)
+    {
+        <h5><b>@item.ParticipantName</b></h5>
+        <h6>@item.AgeGroup.AgeGroupName</h6>
+        <table class="table display">
+            <thead>
+                <tr>
+                    <th>Session</th>
+                    <th>Activity</th>
+                    <th>Activity Zone</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var session in item.Sessions)
+                {
+                    <tr>
+                        <td>@session.SessionGroup.SessionName</td>
+                        <td>@session.Activity.ActivityName</td>
+                        <td>@session.Activity.Zone.ZoneName</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <hr />
+        <br />
+    }
+</div>
+<p>
+    @Html.ActionLink("Back to Club", "Details", "Clubs", new { id = Model.ClubId }, htmlAttributes: new { @class = "btn btn-default"})
+</p>
