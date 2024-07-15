@@ -118,7 +118,7 @@ namespace NewApplication.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ParticipantId,ClubClubId,ParticipantName")] Participant participant)
+        public ActionResult Create([Bind(Include = "ParticipantId,ClubClubId,ParticipantFirstName")] Participant participant)
         {
             if (ModelState.IsValid)
             {
@@ -154,7 +154,7 @@ namespace NewApplication.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind("ParticipantId,ClubClubId,ParticipantName,AgeGroup_AgeGroupId")] Participant participant)
+        public ActionResult Edit([Bind("ParticipantId,ClubClubId,ParticipantFirstName,AgeGroup_AgeGroupId")] Participant participant)
         {
             if (ModelState.IsValid)
             {

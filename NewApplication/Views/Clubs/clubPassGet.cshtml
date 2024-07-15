@@ -7,22 +7,24 @@
 
 
 
-    
-<div class="form-horizontal">
-        <h4>Incorrect Code/No Code Entered</h4>
+<div class="container-fluid">
+    <div class="container-fluid">
+        <div class="form-horizontal">
+            <h4>Incorrect Code/No Code Entered</h4>
+            <hr />
+
+            <input id="passCode" type="password">
+            <button id="login" type="button" class="btn btn-success">Enter</button>
+        </div>
         <hr />
-
-            <input id="passCode" type="text">
-                <button  id="login" type="button" class="btn btn-success" >Enter</button>
-</div>
-<hr />
-<div>
-    @Html.ActionLink("Back to Club List", "Index", "Clubs", htmlAttributes: new { @class = "btn btn-default" })
-</div>
+        <div>
+            @Html.ActionLink("Back to Club List", "Index", "Clubs", htmlAttributes: new { @class = "btn btn-default" })
+        </div>
+    </div>
+ </div>
 
 
-
-<script>
+        <script>
 
     $(document).ready(function () {
         $('#passCode').keypress(function (e) {
@@ -47,4 +49,4 @@
                 }
             });
     });
-</script>
+        </script>

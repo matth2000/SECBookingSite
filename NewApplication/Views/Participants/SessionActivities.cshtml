@@ -35,7 +35,7 @@
                 @Html.DisplayFor(modelItem => item.SessionGroup.SessionName)
             </td>
             <td>
-                @(15-item.Participants.Count())
+                @(13-item.Participants.Count())
             </td>
 
             <td>
@@ -46,7 +46,7 @@
                 }
                 @if (!item.Participants.Contains(ViewBag.Participant))
                 {
-                    if (item.Participants.Count() < 15)
+                    if (item.Participants.Count() < 13)
                     {
                         <button type="button" class="btn btn-default" onclick="addParticipant('@ViewBag.ParticipantId','@item.SessionId')">Add to Session</button>
                     }

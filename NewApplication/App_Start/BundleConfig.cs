@@ -23,14 +23,22 @@ namespace NewApplication
                         "~/Scripts/modernizr-*"));
 
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
-                      "~/Scripts/bootstrap.js"));
+                "~/Scripts/bootstrap.bundle.min.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
+                      "~/Content/adminlte/css/adminlte.min.css",
+                      "~/Content/adminlte/plugins/fontawesome-free/css/all.min.css",
+                      "~/Content/adminlte/plugins/summernote/summernote-bs4.css",
                       "~/Content/site.css"));
-
+                
             bundles.Add(new StyleBundle("~/Content/css/datatables").Include(
                       "~/Content/css/DataTables/jquery.datatables.css"));
+
+            bundles.Add(new ScriptBundle("~/Content/adminlte/js").Include(
+              "~/Content/adminlte/plugins/summernote/summernote-bs4.js2",
+             "~/Content/adminlte/js/adminlte.min.js"));
+
         }
     }
 }

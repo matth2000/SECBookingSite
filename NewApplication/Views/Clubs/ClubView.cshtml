@@ -12,7 +12,7 @@
 
     @foreach (var item in Model.Participants)
     {
-        <h5><b>@item.ParticipantName</b></h5>
+        <h5><b>@item.ParticipantFirstName @item.ParticipantLastName</b></h5>
         <h6>@item.AgeGroup.AgeGroupName</h6>
         <table class="table display">
             <thead>

@@ -18,6 +18,7 @@ namespace NewApplication
         public Club()
         {
             this.Participants = new HashSet<Participant>();
+            this.Users = new HashSet<User>();
         }
     
         public int ClubId { get; set; }
@@ -26,5 +27,7 @@ namespace NewApplication
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Participant> Participants { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<User> Users { get; set; }
     }
 }

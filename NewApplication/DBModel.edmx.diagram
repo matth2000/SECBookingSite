@@ -20,6 +20,8 @@
         <AssociationConnector Association="DBModel.FK_ClubParticipant" />
         <AssociationConnector Association="DBModel.FK_SessionGroupSession" />
         <AssociationConnector Association="DBModel.ParticipantSession" />
+        <EntityTypeShape EntityType="DBModel.User" Width="1.5" PointX="6" PointY="7.75" />
+        <AssociationConnector Association="DBModel.UserClub" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

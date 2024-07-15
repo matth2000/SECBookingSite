@@ -1,47 +1,128 @@
 ﻿<!DOCTYPE html>
-<html>
+<!--
+This is a starter template page. Use this page to start your new project from
+scratch. This page gets rid of all links and provides the needed markup only.
+-->
+<html lang="en">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - SEC Camporee Activity Booking</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>SEC Camp Activity Booking</title>
+
+    <!-- Google Font: Source Sans Pro -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     @Styles.Render("~/Content/css")
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.css">
-    @Scripts.Render("~/bundles/modernizr")
+
+    <!-- Font Awesome Icons -->
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/Content/adminlte/js")
+    @Scripts.Render("~/bundles/modernizr")
     @Scripts.Render("~/bundles/datatables")
 </head>
-<body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                @Html.ActionLink("SEC Camporee 2022 Activity Booking", "Index", "Clubs", new { area = "" }, new { @class = "navbar-brand" })
+
+<body class="hold-transition sidebar-mini">
+    <div class="wrapper">
+
+        <!-- Navbar -->
+        <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+            <!-- Left navbar links -->
+           
+
+            <!-- Right navbar links -->
+        </nav>
+        <!-- /.navbar -->
+        <!-- Main Sidebar Container -->
+        <aside class="main-sidebar sidebar-dark-primary elevation-4">
+            <!-- Brand Logo -->
+            <a href="@Url.Action("Index", "Clubs")" class="brand-link">
+                <img src="~/Content/adminlte/img/SECLOGO.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+                <span class="brand-text font-weight-light">SEC Pathfinders</span>
+            </a>
+
+            <!-- Sidebar -->
+            <div class="sidebar">
+                <!-- Sidebar user panel (optional) -->
+                <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+                    <div class="image">
+                        <i class="fas fa-user-circle"></i>
+                    </div>
+                    <div class="info">
+                       @if (Session["VerifiedActiv"] == true.ToString()){
+                                   <a href = "#" class="d-block">Admin Mode</a>
+                      } 
+                    </div>
+                </div>
+
+                <!-- Sidebar Menu -->
+                <nav class="mt-2">
+                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                        <!-- Add icons to the links using the .nav-icon class
+                             with font-awesome or any other icon font library -->
+                        <li class="nav-item menu-open">
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="@Url.Action("Index", "Clubs")" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Clubs</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="@Url.Action("Index", "Activities")" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Activities</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </nav>
+                <!-- /.sidebar-menu -->
             </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Activities", "Index", "Activities")</li>
-                    @*
-                    <li>@Html.ActionLink("Sessions", "Index", "Sessions")</li>
-                        *@
-                    <li>@Html.ActionLink("Clubs", "Index", "Clubs")</li>
-                </ul>
+            <!-- /.sidebar -->
+        </aside>
+
+        <!-- Content Wrapper. Contains page content -->
+        <div class="content-wrapper">
+            <!-- Content Header (Page header) -->
+            <div class="content-header">
+                <div class="container-fluid"><!-- /.row --><!-- /.row -->
+                </div><!-- /.container-fluid -->
             </div>
-        </div>
-    </div>
-    <div class="container body-content">
-        @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year - Matthew Herman, SEC Pathfinders</p>
+            <!-- /.content-header -->
+            <!-- Main content -->
+            <div class="content">
+                <div class="container-fluid">
+                    <div class="container-fluid">
+                        <div class="container-fluid">
+                            @RenderBody()
+                            <!-- /.row -->
+                        </div><!-- /.container-fluid -->
+                    </div>
+                    </div>
+                </div>
+                    <!-- /.content -->
+                </div>
+        <!-- /.content-wrapper -->
+        <!-- Control Sidebar -->
+        <aside class="control-sidebar control-sidebar-dark">
+            <!-- Control sidebar content goes here -->
+            <div class="p-3">
+                <h5>Title</h5>
+                <p>Sidebar content</p>
+            </div>
+        </aside>
+        <!-- /.control-sidebar -->
+        <!-- Main Footer -->
+        <footer class="main-footer">
+            <!-- To the right -->
+            <!-- Default to the left -->
+            <strong>Copyright &copy; 2024 <a href="mailto:pathfinders@secadventist.org.uk ">SEC Pathfinders</a>.</strong> All rights reserved.
         </footer>
     </div>
+        @RenderSection("scripts", required: false)
+    </body>
 
-
-    @RenderSection("scripts", required: false)
-</body>
 </html>
+

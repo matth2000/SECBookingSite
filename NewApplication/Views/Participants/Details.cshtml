@@ -4,20 +4,25 @@
     ViewBag.Title = "Details";
 }
 
-<h2>@Model.ParticipantName</h2>
+<div class="container-fluid">
+    <div class="container-fluid">
+        <h2>@Model.ParticipantFirstName</h2>
+        <h3>@Model.ParticipantLastName</h3>
 
-<div>
-    <h4>@Model.Club.ClubName</h4>
-    <h5>@Model.AgeGroup.AgeGroupName</h5>
-    @Html.ActionLink("Back to Club", "Details", "Clubs", new { id = Model.Club.ClubId }, htmlAttributes: new { @class = "btn btn-default" })
+        <div>
+            <h4>@Model.Club.ClubName</h4>
+            <h5>@Model.AgeGroup.AgeGroupName</h5>
+            @Html.ActionLink("Back to Club", "Details", "Clubs", new { id = Model.Club.ClubId }, htmlAttributes: new { @class = "btn btn-default" })
 
 
-    <div id="sesssionsView">
-        @Html.Action("Sessions", new { id = Model.ParticipantId })
+            <div id="sesssionsView">
+                @Html.Action("Sessions", new { id = Model.ParticipantId })
+            </div>
+
+        </div>
+        <hr />
     </div>
-
 </div>
-<hr />
 
 
 

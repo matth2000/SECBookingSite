@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using NewApplication;
+using Renci.SshNet;
 
 
 namespace NewApplication.Controllers
@@ -118,7 +119,7 @@ namespace NewApplication.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ParticipantId,ClubClubId,ParticipantName")] Participant participant)
+        public ActionResult Create([Bind(Include = "ParticipantId,ClubClubId,ParticipantFirstName")] Participant participant)
         {
             if (ModelState.IsValid)
             {
@@ -154,7 +155,7 @@ namespace NewApplication.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ParticipantId,ClubClubId,ParticipantName,AgeGroup_AgeGroupId")] Participant participant)
+        public ActionResult Edit([Bind(Include = "ParticipantId,ClubClubId,ParticipantFirstName,ParticipantLastName,AgeGroup_AgeGroupId")] Participant participant)
         {
             if (ModelState.IsValid)
             {
@@ -179,6 +180,23 @@ namespace NewApplication.Controllers
                 return HttpNotFound();
             }
             return View(participant);
+        }
+
+        public bool RemovePerson(int id)
+        {
+            try { 
+                Participant participant = db.Participants.Find(id);
+                participant.Sessions.Clear();
+                db.Entry(participant).State = EntityState.Modified;
+                db.SaveChanges();
+                db.Participants.Remove(participant);
+                db.SaveChanges();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
         }
         /*
         // GET: Participants/Delete/5

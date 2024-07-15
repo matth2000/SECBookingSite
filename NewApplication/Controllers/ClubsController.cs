@@ -110,7 +110,7 @@ namespace NewApplication.Controllers
         }
 
         [HttpPost]
-        public ActionResult CreateParticipant ([Bind(Include = "ParticipantId,ClubClubId,ParticipantName,AgeGroup_AgeGroupId")] Participant participant)
+        public ActionResult CreateParticipant ([Bind(Include = "ParticipantId,ClubClubId,ParticipantFirstName,ParticipantLastName,AgeGroup_AgeGroupId")] Participant participant)
         {
             if (ModelState.IsValid)
             {

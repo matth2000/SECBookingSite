@@ -6,6 +6,8 @@
 
 <h2>Activitiy List</h2>
 
+<a href="@Url.Action("ExcelDownloadAdmin","Activities")" class="btn btn-default">Download Excel (All Sessions)</a>
+
 
 <table id="myTable" class="table display">
     <thead>
@@ -28,7 +30,7 @@
     <tbody>
         @foreach (var item in Model)
         {
-            var activityCount = (item.Sessions.Count() * 15);
+            var activityCount = (item.Sessions.Count() * 13);
             var participantCount = 0;
 
             foreach (var session in item.Sessions)

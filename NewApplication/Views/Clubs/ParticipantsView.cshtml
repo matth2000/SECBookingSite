@@ -4,7 +4,10 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.ParticipantName)
+                @Html.DisplayNameFor(model => model.ParticipantFirstName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ParticipantLastName)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Club.ClubName)
@@ -20,7 +23,10 @@
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.ParticipantName)
+                    @Html.DisplayFor(modelItem => item.ParticipantFirstName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ParticipantLastName)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Club.ClubName)
@@ -32,8 +38,11 @@
                     @Html.ActionLink("Edit Participant", "Edit", "Participants", new { id = item.ParticipantId, clubId = item.ClubClubId }, htmlAttributes: new { @class = "btn btn-default" })
                     @Html.ActionLink("Book Sessions", "Details", "Participants", new { id = item.ParticipantId }, htmlAttributes: new { @class = "btn btn-default" })
                     @Html.ActionLink("Session Schedule", "ParticipantSessions", "Participants", new { id = item.ParticipantId }, htmlAttributes: new { @class = "btn btn-default" })
+                    <button type="button" class="btn btn-danger" onclick="removePerson('@item.ParticipantId')">Remove Participant</button>
                 </td>
-            </tr>
+            </tr> 
         }
     </tbody>
 </table>
+
+

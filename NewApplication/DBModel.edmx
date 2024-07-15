@@ -35,7 +35,8 @@
           </Key>
           <Property Name="ParticipantId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ClubClubId" Type="int" Nullable="false" />
-          <Property Name="ParticipantName" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="ParticipantFirstName" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="ParticipantLastName" Type="nvarchar(max)" Nullable="false" />
           <Property Name="AgeGroup_AgeGroupId" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="ParticipantSession">
@@ -71,6 +72,25 @@
           <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="version" Type="int" />
           <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <EntityType Name="UserClub">
+          <Key>
+            <PropertyRef Name="Users_Id" />
+            <PropertyRef Name="Clubs_ClubId" />
+          </Key>
+          <Property Name="Users_Id" Type="int" Nullable="false" />
+          <Property Name="Clubs_ClubId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Username" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Email" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Password" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Salt" Type="nvarchar(max)" />
+          <Property Name="Admin" Type="bit" />
         </EntityType>
         <EntityType Name="Zones">
           <Key>
@@ -175,6 +195,30 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_UserClub_Club">
+          <End Role="Clubs" Type="Self.Clubs" Multiplicity="1" />
+          <End Role="UserClub" Type="Self.UserClub" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Clubs">
+              <PropertyRef Name="ClubId" />
+            </Principal>
+            <Dependent Role="UserClub">
+              <PropertyRef Name="Clubs_ClubId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserClub_User">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="UserClub" Type="Self.UserClub" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserClub">
+              <PropertyRef Name="Users_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Function Name="GetParticipantSessions" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="ParticipantId" Type="int" Mode="In" />
         </Function>
@@ -187,6 +231,8 @@
           <EntitySet Name="SessionGroups" EntityType="Self.SessionGroups" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Sessions" EntityType="Self.Sessions" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserClub" EntityType="Self.UserClub" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Zones" EntityType="Self.Zones" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_ActivitySession" Association="Self.FK_ActivitySession">
             <End Role="Activities" EntitySet="Activities" />
@@ -219,6 +265,14 @@
           <AssociationSet Name="FK_SessionGroupSession" Association="Self.FK_SessionGroupSession">
             <End Role="SessionGroups" EntitySet="SessionGroups" />
             <End Role="Sessions" EntitySet="Sessions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserClub_Club" Association="Self.FK_UserClub_Club">
+            <End Role="Clubs" EntitySet="Clubs" />
+            <End Role="UserClub" EntitySet="UserClub" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserClub_User" Association="Self.FK_UserClub_User">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="UserClub" EntitySet="UserClub" />
           </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
@@ -265,6 +319,11 @@
           <FunctionImport Name="GetParticipantSessions" EntitySet="Sessions" ReturnType="Collection(DBModel.Session)">
           <Parameter Name="ParticipantId" Mode="In" Type="Int32" />
           </FunctionImport>
+          <EntitySet Name="Users" EntityType="DBModel.User" />
+          <AssociationSet Name="UserClub" Association="DBModel.UserClub">
+            <End Role="Club" EntitySet="Clubs" />
+            <End Role="User" EntitySet="Users" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="Activity">
           <Key>
@@ -295,6 +354,7 @@
           <Property Name="ClubName" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Participants" Relationship="DBModel.FK_ClubParticipant" FromRole="Club" ToRole="Participant" />
           <Property Name="ClubPass" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Users" Relationship="DBModel.UserClub" FromRole="Club" ToRole="User" />
         </EntityType>
         <EntityType Name="Participant">
           <Key>
@@ -302,11 +362,12 @@
           </Key>
           <Property Name="ParticipantId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="ClubClubId" Type="Int32" Nullable="false" />
-          <Property Name="ParticipantName" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="AgeGroup_AgeGroupId" Type="Int32" Nullable="false" />
           <NavigationProperty Name="AgeGroup" Relationship="DBModel.FK_ParticipantAgeGroup" FromRole="Participant" ToRole="AgeGroup" />
           <NavigationProperty Name="Club" Relationship="DBModel.FK_ClubParticipant" FromRole="Participant" ToRole="Club" />
           <NavigationProperty Name="Sessions" Relationship="DBModel.ParticipantSession" FromRole="Participant" ToRole="Session" />
+          <Property Name="ParticipantFirstName" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ParticipantLastName" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="SessionGroup">
           <Key>
@@ -434,6 +495,22 @@
           <Property Type="Int32" Name="SessionGroupSessionGroupId" Nullable="false" />
           <Property Type="Int32" Name="ActivityActivityId" Nullable="false" />
         </ComplexType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Username" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Password" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Salt" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Admin" Type="Boolean" />
+          <NavigationProperty Name="Clubs" Relationship="DBModel.UserClub" FromRole="User" ToRole="Club" />
+        </EntityType>
+        <Association Name="UserClub">
+          <End Type="DBModel.Club" Role="Club" Multiplicity="*" />
+          <End Type="DBModel.User" Role="User" Multiplicity="*" />
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -470,8 +547,9 @@
           <EntitySetMapping Name="Participants">
             <EntityTypeMapping TypeName="DBModel.Participant">
               <MappingFragment StoreEntitySet="Participants">
+                <ScalarProperty Name="ParticipantLastName" ColumnName="ParticipantLastName" />
+                <ScalarProperty Name="ParticipantFirstName" ColumnName="ParticipantFirstName" />
                 <ScalarProperty Name="AgeGroup_AgeGroupId" ColumnName="AgeGroup_AgeGroupId" />
-                <ScalarProperty Name="ParticipantName" ColumnName="ParticipantName" />
                 <ScalarProperty Name="ClubClubId" ColumnName="ClubClubId" />
                 <ScalarProperty Name="ParticipantId" ColumnName="ParticipantId" />
               </MappingFragment>
@@ -524,6 +602,26 @@
           </AssociationSetMapping>
           <FunctionImportMapping FunctionImportName="GetParticipantSessions" FunctionName="DBModel.Store.GetParticipantSessions">
           </FunctionImportMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="DBModel.User">
+              <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="Admin" ColumnName="Admin" />
+                <ScalarProperty Name="Salt" ColumnName="Salt" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Username" ColumnName="Username" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="UserClub" TypeName="DBModel.UserClub" StoreEntitySet="UserClub">
+            <EndProperty Name="User">
+              <ScalarProperty Name="Id" ColumnName="Users_Id" />
+            </EndProperty>
+            <EndProperty Name="Club">
+              <ScalarProperty Name="ClubId" ColumnName="Clubs_ClubId" />
+            </EndProperty>
+          </AssociationSetMapping>
         </EntityContainerMapping>
 </Mapping></edmx:Mappings>
   </edmx:Runtime>

@@ -22,7 +22,7 @@ namespace NewApplication
     
         public int ParticipantId { get; set; }
         public int ClubClubId { get; set; }
-        public string ParticipantName { get; set; }
+        public string ParticipantFirstName { get; set; }
         public int AgeGroup_AgeGroupId { get; set; }
     
         public virtual AgeGroup AgeGroup { get; set; }

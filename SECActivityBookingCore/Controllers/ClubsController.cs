@@ -2,6 +2,7 @@
 using System.Data;
 using System.Linq;
 using System.Net;
+using System.Web;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
@@ -13,8 +14,8 @@ namespace NewApplication.Controllers
 
         // GET: Clubs
         public ActionResult Index()
-        {
-            return View(db.Clubs.ToList());
+        {   
+                return View();         
         }
 
         // GET: Clubs/Details/5
@@ -112,7 +113,7 @@ namespace NewApplication.Controllers
         }
 
         [HttpPost]
-        public ActionResult CreateParticipant ([Bind("ParticipantId,ClubClubId,ParticipantName,AgeGroup_AgeGroupId")] Participant participant)
+        public ActionResult CreateParticipant ([Bind("ParticipantId,ClubClubId,ParticipantFirstName,AgeGroup_AgeGroupId")] Participant participant)
         {
             if (ModelState.IsValid)
             {

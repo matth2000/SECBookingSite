@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Data;
 using System.Data.Entity;
 using System.Linq;
@@ -7,6 +8,8 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using NewApplication;
+using OfficeOpenXml;
+using Renci.SshNet;
 using Rotativa;
 
 namespace NewApplication.Controllers
@@ -82,6 +85,72 @@ namespace NewApplication.Controllers
                 }
             }
             return RedirectToAction("activPassGet", "Activities");
+        }
+
+        public void ExcelDownload(int activId)
+        {
+            Activity activity = db.Activities.Find(activId);
+            List<Session> sessions = activity.Sessions.ToList();
+            ExcelPackage Ep = new ExcelPackage();
+            foreach (var session in sessions)
+            {
+                ExcelWorksheet Sheet = Ep.Workbook.Worksheets.Add((activity.ActivityName + session.SessionGroup.SessionName));
+                Sheet.Cells["A1"].Value = "Activity";
+                Sheet.Cells["B1"].Value = "First Name";
+                Sheet.Cells["C1"].Value = "Last Name";
+                Sheet.Cells["D1"].Value = "Club";
+                Sheet.Cells["E1"].Value = "Age Group";
+                int row = 2;
+                foreach (var participant in session.Participants)
+                {
+                    Sheet.Cells[string.Format("A{0}", row)].Value = activity.ActivityName;
+                    Sheet.Cells[string.Format("B{0}", row)].Value = participant.ParticipantFirstName;
+                    Sheet.Cells[string.Format("C{0}", row)].Value = participant.ParticipantLastName;
+                    Sheet.Cells[string.Format("D{0}", row)].Value = participant.Club.ClubName;
+                    Sheet.Cells[string.Format("E{0}", row)].Value = participant.AgeGroup.AgeGroupName;
+                    row++;
+                }
+                Sheet.Cells["A:AZ"].AutoFitColumns();
+            }
+            Response.Clear();
+            Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+            Response.AddHeader("content-disposition", "attachment: filename=" + "Report.xlsx");
+            Response.BinaryWrite(Ep.GetAsByteArray());
+            Response.End();
+        }
+
+        public void ExcelDownloadAdmin()
+        {
+            List<SessionGroup> sessionGroups = db.SessionGroups.ToList();
+            ExcelPackage Ep = new ExcelPackage();
+            foreach (var sessionGroup in sessionGroups)
+            {                
+                ExcelWorksheet Sheet = Ep.Workbook.Worksheets.Add(sessionGroup.SessionName);
+                Sheet.Cells["A1"].Value = "Activity";
+                Sheet.Cells["B1"].Value = "First Name";
+                Sheet.Cells["C1"].Value = "Last Name";
+                Sheet.Cells["D1"].Value = "Club";
+                Sheet.Cells["E1"].Value = "Age Group";
+                int row = 2;
+                foreach(var session in sessionGroup.Sessions)
+                {
+                    foreach (var participant in session.Participants)
+                    {
+                        Sheet.Cells[string.Format("A{0}", row)].Value = session.Activity.ActivityName;
+                        Sheet.Cells[string.Format("B{0}", row)].Value = participant.ParticipantFirstName;
+                        Sheet.Cells[string.Format("C{0}", row)].Value = participant.ParticipantLastName;
+                        Sheet.Cells[string.Format("D{0}", row)].Value = participant.Club.ClubName;
+                        Sheet.Cells[string.Format("E{0}", row)].Value = participant.AgeGroup.AgeGroupName;
+                        row++;
+                    }
+                }
+                Sheet.Cells["A:AZ"].AutoFitColumns();
+            }
+            Response.Clear();
+            Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+            Response.AddHeader("content-disposition", "attachment: filename=" + "Report.xlsx");
+            Response.BinaryWrite(Ep.GetAsByteArray());
+            Response.End();
         }
         /*
        public ActionResult PrintActivity(int ActivityId)

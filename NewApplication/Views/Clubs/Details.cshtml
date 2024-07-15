@@ -3,15 +3,42 @@
 @{
     ViewBag.Title = "Details";
 }
+<div class="container-fluid">
+    <div class="container-fluid">
+        <h2>@Model.ClubName</h2>
 
-<h2>@Model.ClubName</h2>
+        <div>
+            <h4>Club Participants</h4>
+            @Html.ActionLink("Add Participant", "CreateParticipant", new { id = Model.ClubId }, htmlAttributes: new { @class = "btn btn-default" })
+            @Html.ActionLink("View Participant Sessions", "ClubView", new { id = Model.ClubId }, htmlAttributes: new { @class = "btn btn-default" })
+            <hr />
 
-<div>
-    <h4>Club Participants</h4>
-    @Html.ActionLink("Add Participant", "CreateParticipant", new { id = Model.ClubId }, htmlAttributes: new { @class = "btn btn-default" })
-    @Html.ActionLink("View Participant Sessions", "ClubView", new { id = Model.ClubId }, htmlAttributes: new { @class = "btn btn-default" })
-    <hr />
-
-    @Html.Action("ParticipantsView", Model.ClubId)
+            @Html.Action("ParticipantsView", Model.ClubId)
+        </div>
+    </div>
 </div>
 
+
+<script>
+    function removePerson(participantId) {
+        console.log(participantId);
+        console.log('@Url.Action("RemovePerson", "Participants")');
+            $.ajax({
+                type: "POST",
+                data: {
+                   id: participantId
+                },
+            url: "@Url.Action("RemovePerson", "Participants")",
+                success: function (result) {
+                    console.log(result);
+                    alert("Participant Removed Successfully");
+                    window.location.reload();
+                },
+                error: function (result) {
+                    console.log(result);
+                    alert("An Error occured removing participant, please contact us to correct this");
+                    window.location.reload();
+                }
+            });
+        }
+</script>
